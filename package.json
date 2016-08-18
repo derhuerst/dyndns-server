@@ -13,6 +13,7 @@
 	"dependencies": {
 		"named": "trevoro/node-named",
 		"config": "^1.21",
-		"http-auth": "^2.4.4"
+		"http-auth": "^2.4.4",
+		"ip-regex": "^1.0.3"
 	}
 }
