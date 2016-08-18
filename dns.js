@@ -3,19 +3,24 @@
 const named = require('named')
 const cfg = require('config')
 
-const ipv4 = '127.0.0.1'
-const ipv6 = '::1'
+const server = (getA, getAAAA) => {
+	const server = named.createServer()
 
-const server = named.createServer()
+	server.on('query', (q) => {
+		const name = q.name()
+		const record = q.type()
 
-server.on('query', (q) => {
-	const name = q.name()
-	const type = q.type()
-	if (name !== cfg.domain) return server.send(q)
-	console.info(Math.round(Date.now() / 1000) + ' ' + type)
-	if (type === 'A') q.addAnswer(name, new named.ARecord(ipv4), cfg.ttl)
-	if (type === 'AAAA') q.addAnswer(name, new named.AAAARecord(ipv6), cfg.ttl)
-	server.send(q)
-})
+		if (name !== cfg.domain) return server.send(q)
+		console.info('dns', Math.round(Date.now() / 1000), record)
+
+		if (record === 'A')
+			q.addAnswer(name, new named.ARecord(getA()), cfg.ttl)
+		if (record === 'AAAA')
+			q.addAnswer(name, new named.AAAARecord(getAAAA()), cfg.ttl)
+		server.send(q)
+	})
+
+	return server
+}
 
 module.exports = server
