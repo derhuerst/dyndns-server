@@ -5,5 +5,9 @@ module.exports = {
 	httpPort: 8053,
 	domain: 'example.org',
 	ttl: 300,
-	key: '<your secret key here>'
+	key: '<your secret key here>',
+	https: {
+		key:  'device.key',
+		cert: 'device.crt'
+	}
 }

@@ -1,12 +1,18 @@
 'use strict'
 
+const fs = require('fs')
 const cfg = require('config')
 const auth = require('basic-auth')
 const url = require('url')
-const http = require('http')
+const spdy = require('spdy')
 const ipRegex = require('ip-regex')
 
 
+
+const ssl = {
+	cert: fs.readFileSync(cfg.https.cert),
+	key: fs.readFileSync(cfg.https.key)
+}
 
 const validateAuth = (req, res) => {
 	if (auth(req).pass !== cfg.key) {
@@ -37,7 +43,7 @@ const ipv6 = ipRegex.v6({exact: true})
 
 const server = (setA, setAAAA) => {
 
-	const server = http.createServer((req, res) => {
+	const server = spdy.createServer(ssl, (req, res) => {
 		if (!validateAuth(req, res)) return
 		if (!validateMethod(req, res)) return
 		const record = validatePath(req, res)
