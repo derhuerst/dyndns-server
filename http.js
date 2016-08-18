@@ -1,14 +1,19 @@
 'use strict'
 
-const auth = require('http-auth')
-const http = require('http')
-const url = require('url')
 const cfg = require('config')
+const auth = require('basic-auth')
+const url = require('url')
+const http = require('http')
 const ipRegex = require('ip-regex')
 
 
 
-const protect = auth.basic({}, (user, key, cb) => cb(key === cfg.key))
+const validateAuth = (req, res) => {
+	if (auth(req).pass !== cfg.key) {
+		res.statusCode = 401
+		res.end('Unauthorized.')
+	} else return true
+}
 
 const validateMethod = (req, res) => {
 	if (req.method !== 'POST') {
@@ -32,7 +37,8 @@ const ipv6 = ipRegex.v6({exact: true})
 
 const server = (setA, setAAAA) => {
 
-	const server = http.createServer(protect, (req, res) => {
+	const server = http.createServer((req, res) => {
+		if (!validateAuth(req, res)) return
 		if (!validateMethod(req, res)) return
 		const record = validatePath(req, res)
 		if (!record) return
