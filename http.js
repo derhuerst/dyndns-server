@@ -22,9 +22,9 @@ const validateAuth = (req, res) => {
 }
 
 const validateMethod = (req, res) => {
-	if (req.method !== 'POST') {
+	if (req.method !== 'PATCH') {
 		res.statusCode = 405
-		res.end('HTTP POST only.')
+		res.end('HTTP PATCH only.')
 	} else return true
 }
 
