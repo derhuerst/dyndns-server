@@ -12,6 +12,7 @@
 	"engines" :    {"node": ">=6"},
 	"dependencies": {
 		"named": "trevoro/node-named",
-		"config": "^1.21"
+		"config": "^1.21",
+		"http-auth": "^2.4.4"
 	}
 }
