@@ -1,0 +1,13 @@
+{
+	"name":        "dyndns-server",
+	"description": "A small dynamic DNS server.",
+	"version":     "0.1.0",
+	"keywords":    ["dns", "dynamic", "dyndns", "nat"],
+	"main":        "index.js",
+	"author":      "Jannis R <mail@jannisr.de>",
+	"homepage":    "https://github.com/derhuerst/dyndns-server",
+	"repository":  "derhuerst/dyndns-server",
+	"issues":      "https://github.com/derhuerst/dyndns-server/issues",
+	"license":     "ISC",
+	"engines" :    {"node": ">=6"}
+}
