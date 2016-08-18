@@ -2,5 +2,6 @@
 
 module.exports = {
 	ports: 53,
-	domain: 'example.org'
+	domain: 'example.org',
+	ttl: 300
 }

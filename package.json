@@ -9,5 +9,9 @@
 	"repository":  "derhuerst/dyndns-server",
 	"issues":      "https://github.com/derhuerst/dyndns-server/issues",
 	"license":     "ISC",
-	"engines" :    {"node": ">=6"}
+	"engines" :    {"node": ">=6"},
+	"dependencies": {
+		"named": "trevoro/node-named",
+		"config": "^1.21"
+	}
 }
