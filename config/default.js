@@ -1,7 +1,8 @@
 'use strict'
 
 module.exports = {
-	ports: 53,
+	dnsPort: 53,
+	httpPort: 8053,
 	domain: 'example.org',
 	ttl: 300
 }

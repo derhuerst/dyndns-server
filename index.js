@@ -1,24 +1,16 @@
 'use strict'
 
-const named = require('named')
 const cfg = require('config')
 
-const ipv4 = '127.0.0.1'
-const ipv6 = '::1'
+const dns = require('./dns')
+const http = require('./http')
 
-const server = named.createServer()
-
-server.on('query', (q) => {
-	const name = q.name()
-	const type = q.type()
-	if (name !== cfg.domain) return server.send(q)
-	console.info(Math.round(Date.now() / 1000) + ' ' + type)
-	if (type === 'A') q.addAnswer(name, new named.ARecord(ipv4), cfg.ttl)
-	if (type === 'AAAA') q.addAnswer(name, new named.AAAARecord(ipv6), cfg.ttl)
-	server.send(q)
+dns.listen(cfg.dnsPort, 'localhost', (err) => {
+	if (err) throw err
+	console.info(`DNS server listening at port ${cfg.dnsPort}.`)
 })
 
-server.listen(cfg.port, 'localhost', (err) => {
+http.listen(cfg.httpPort, 'localhost', (err) => {
 	if (err) throw err
-	console.info(`Listening at port ${cfg.port}.`)
+	console.info(`HTTP server listening at port ${cfg.httpPort}.`)
 })
