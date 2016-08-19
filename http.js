@@ -15,7 +15,8 @@ const ssl = {
 }
 
 const validateAuth = (req, res) => {
-	if (auth(req).pass !== cfg.key) {
+	const data = auth(req)
+	if (!data && data.pass !== cfg.key) {
 		res.statusCode = 401
 		res.end('Unauthorized.')
 	} else return true

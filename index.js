@@ -19,13 +19,13 @@ const setAAAA = (ip) => {aaaa = ip}
 
 
 const dns = dnsServer(getA, getAAAA)
-dns.listen(cfg.dnsPort, 'localhost', (err) => {
+dns.listen(cfg.dnsPort, '::', (err) => {
 	if (err) throw err
 	console.info(`DNS server listening at port ${cfg.dnsPort}.`)
 })
 
 const http = httpServer(setA, setAAAA)
-http.listen(cfg.httpPort, 'localhost', (err) => {
+http.listen(cfg.httpPort, (err) => {
 	if (err) throw err
 	console.info(`HTTP server listening at port ${cfg.httpPort}.`)
 })
