@@ -14,9 +14,7 @@
 git clone https://github.com/derhuerst/dyndns-server.git
 cd dyndns-server
 npm install --production
-# create config/production.js
-export NODE_ENV=production
-npm start
+env DOMAIN=awesome.horse KEY=super-secret npm start
 ```
 
 

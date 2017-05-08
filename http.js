@@ -1,22 +1,21 @@
 'use strict'
 
-const fs = require('fs')
-const cfg = require('config')
 const auth = require('basic-auth')
 const url = require('url')
-const spdy = require('spdy')
+const http = require('http')
 const ipRegex = require('ip-regex')
 
-
-
-const ssl = {
-	cert: fs.readFileSync(cfg.https.cert),
-	key: fs.readFileSync(cfg.https.key)
+const showError = (err) => {
+	console.error(err)
+	process.exit(1)
 }
+
+const key = process.env.KEY
+if (!key) showError('Missing KEY env var.')
 
 const validateAuth = (req, res) => {
 	const data = auth(req)
-	if (!data && data.pass !== cfg.key) {
+	if (!data && data.pass !== key) {
 		res.statusCode = 401
 		res.end('Unauthorized.')
 	} else return true
@@ -44,7 +43,7 @@ const ipv6 = ipRegex.v6({exact: true})
 
 const server = (setA, setAAAA) => {
 
-	const server = spdy.createServer(ssl, (req, res) => {
+	const server = http.createServer((req, res) => {
 		if (!validateAuth(req, res)) return
 		if (!validateMethod(req, res)) return
 		const record = validatePath(req, res)
