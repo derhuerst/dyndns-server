@@ -12,16 +12,10 @@
 	"engines" :    {"node": ">=6"},
 	"dependencies": {
 		"named": "trevoro/node-named",
-		"basic-auth": "^1.0.4",
-		"ip-regex": "^1.0.3"
-	},
-	"peerDependencies": {
-		"forever": "^0.15.2"
+		"basic-auth": "^1.1.0",
+		"ip-regex": "^2.1.0"
 	},
 	"scripts": {
-		"start":  "forever start --uid dyndns-server -a index.js",
-		"stop":   "forever stop dyndns-server",
-		"ssh":    "ssh -i ./scaleway root@163.172.179.84",
-		"deploy": "./deploy"
+		"start":  "node index.js"
 	}
 }

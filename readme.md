@@ -6,6 +6,7 @@
 [![dependency status](https://img.shields.io/david/derhuerst/dyndns-server.svg)](https://david-dm.org/derhuerst/dyndns-server)
 [![dev dependency status](https://img.shields.io/david/dev/derhuerst/dyndns-server.svg)](https://david-dm.org/derhuerst/dyndns-server#info=devDependencies)
 ![ISC-licensed](https://img.shields.io/github/license/derhuerst/dyndns-server.svg)
+[![chat on gitter](https://badges.gitter.im/derhuerst.svg)](https://gitter.im/derhuerst)
 
 
 ## Installing
