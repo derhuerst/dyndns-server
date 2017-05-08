@@ -15,7 +15,7 @@ if (!key) showError('Missing KEY env var.')
 
 const validateAuth = (req, res) => {
 	const data = auth(req)
-	if (!data && data.pass !== key) {
+	if (!data || data.pass !== key) {
 		res.statusCode = 401
 		res.end('Unauthorized.')
 	} else return true
