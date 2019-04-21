@@ -1,16 +1,18 @@
 'use strict'
 
-const auth = require('basic-auth')
+const parseAuthHeader = require('basic-auth')
 const url = require('url')
 const http = require('http')
 const ipRegex = require('ip-regex')
 const {key} = require('./lib/config')
+const logger = require('./lib/logger')
 
 const validateAuth = (req, res) => {
-	const data = auth(req)
-	if (!data || data.pass !== key) {
+	const auth = parseAuthHeader(req)
+	if (!auth || auth.pass !== key) {
 		res.statusCode = 401
 		res.end('Unauthorized.')
+		logger.warn({auth}, 'Unauthorized.')
 	} else return true
 }
 
@@ -18,6 +20,7 @@ const validateMethod = (req, res) => {
 	if (req.method !== 'PATCH') {
 		res.statusCode = 405
 		res.end('HTTP PATCH only.')
+		logger.warn({method: req.method}, 'Invalid method.')
 	} else return true
 }
 
@@ -26,6 +29,7 @@ const validatePath = (req, res) => {
 	if (record !== 'A' && record !== 'AAAA') {
 		res.statusCode = 404
 		res.end('/A and /AAAA only.')
+		logger.warn({record}, 'Invalid record.')
 	} else return record
 }
 
@@ -59,7 +63,7 @@ const server = (setA, setAAAA) => {
 				} else setAAAA(ip)
 			}
 
-			console.info('http', Math.round(Date.now() / 1000), record, ip)
+			logger.debug({record, ip}, 'Record set.')
 			res.end(ip)
 		})
 	})

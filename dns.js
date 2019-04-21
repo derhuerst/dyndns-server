@@ -2,6 +2,7 @@
 
 const dnsSocket = require('dns-socket')
 const {domain, ttl} = require('./lib/config')
+const logger = require('./lib/logger')
 
 const createServer = (getA, getAAAA) => {
 	const resolvers = Object.create(null)
@@ -23,8 +24,6 @@ const createServer = (getA, getAAAA) => {
 		}
 
 		for (const q of questions) {
-			console.info('dns', Math.round(Date.now() / 1000), q.type)
-
 			const record = {
 				type: q.type,
 				class: q.class,
@@ -32,6 +31,8 @@ const createServer = (getA, getAAAA) => {
 				ttl,
 				data: resolvers[q.type]()
 			}
+			logger.debug({query: query.id, record}, 'Responding.')
+
 			res.answers.push(record)
 			res.authorities.push(record)
 		}
