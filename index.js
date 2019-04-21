@@ -2,14 +2,7 @@
 
 const dnsServer = require('./dns')
 const httpServer = require('./http')
-
-const showError = (err) => {
-	console.error(err)
-	process.exit(1)
-}
-
-const dnsPort = process.env.DNS_PORT || 53
-const httpPort = process.env.HTTP_PORT || 8053
+const {dnsPort, httpPort} = require('./lib/config')
 
 let a = '127.0.0.1'
 let aaaa = '::1'

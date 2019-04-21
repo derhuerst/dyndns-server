@@ -4,6 +4,12 @@
 	"version":     "0.1.0",
 	"keywords":    ["dns", "dynamic", "dyndns", "nat"],
 	"main":        "index.js",
+	"files": [
+		"index.js",
+		"dns.js",
+		"http.js",
+		"lib"
+	],
 	"author":      "Jannis R <mail@jannisr.de>",
 	"homepage":    "https://github.com/derhuerst/dyndns-server",
 	"repository":  "derhuerst/dyndns-server",

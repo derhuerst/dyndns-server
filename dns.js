@@ -1,15 +1,7 @@
 'use strict'
 
 const dnsSocket = require('dns-socket')
-
-const showError = (err) => {
-	console.error(err)
-	process.exit(1)
-}
-
-const domain = process.env.DOMAIN
-if (!domain) showError('Missing DOMAIN env var.')
-const ttl = process.env.TTL || 300
+const {domain, ttl} = require('./lib/config')
 
 const createServer = (getA, getAAAA) => {
 	const resolvers = Object.create(null)

@@ -4,14 +4,7 @@ const auth = require('basic-auth')
 const url = require('url')
 const http = require('http')
 const ipRegex = require('ip-regex')
-
-const showError = (err) => {
-	console.error(err)
-	process.exit(1)
-}
-
-const key = process.env.KEY
-if (!key) showError('Missing KEY env var.')
+const {key} = require('./lib/config')
 
 const validateAuth = (req, res) => {
 	const data = auth(req)
