@@ -1,6 +1,6 @@
 'use strict'
 
-const named = require('named')
+const dnsSocket = require('dns-socket')
 
 const showError = (err) => {
 	console.error(err)
@@ -11,24 +11,45 @@ const domain = process.env.DOMAIN
 if (!domain) showError('Missing DOMAIN env var.')
 const ttl = process.env.TTL || 300
 
-const server = (getA, getAAAA) => {
-	const server = named.createServer()
+const createServer = (getA, getAAAA) => {
+	const resolvers = Object.create(null)
+	resolvers.A = getA
+	resolvers.AAAA = getAAAA
 
-	server.on('query', (q) => {
-		const name = q.name()
-		const record = q.type()
+	const socket = dnsSocket()
+	socket.on('query', (query, port, host) => {
+		const questions = query.questions
+		.filter(q => q.class === 'IN')
+		.filter(q => !!resolvers[q.type])
+		.filter(q => q.name === domain)
 
-		if (name !== domain) return server.send(q)
-		console.info('dns', Math.round(Date.now() / 1000), record)
+		const res = {
+			questions,
+			flags: dnsSocket.AUTHORITATIVE_ANSWER,
+			answers: [],
+			authorities: []
+		}
 
-		if (record === 'A')
-			q.addAnswer(name, new named.ARecord(getA()), ttl)
-		if (record === 'AAAA')
-			q.addAnswer(name, new named.AAAARecord(getAAAA()), ttl)
-		server.send(q)
+		for (const q of questions) {
+			console.info('dns', Math.round(Date.now() / 1000), q.type)
+
+			const record = {
+				type: q.type,
+				class: q.class,
+				name: domain,
+				ttl,
+				data: resolvers[q.type]()
+			}
+			res.answers.push(record)
+			res.authorities.push(record)
+		}
+
+		socket.response(query, res, port, host)
 	})
 
-	return server
+	return {
+		listen: socket.bind.bind(socket)
+	}
 }
 
-module.exports = server
+module.exports = createServer

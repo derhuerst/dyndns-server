@@ -11,8 +11,8 @@
 	"license":     "ISC",
 	"engines" :    {"node": ">=6"},
 	"dependencies": {
-		"named": "trevoro/node-named",
 		"basic-auth": "^1.1.0",
+		"dns-socket": "^4.2.0",
 		"ip-regex": "^2.1.0"
 	},
 	"scripts": {
