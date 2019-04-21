@@ -1,9 +1,8 @@
-FROM node
+FROM node:alpine
 
 WORKDIR /app
-ADD . /app
-
-RUN npm install
+COPY . /app
+RUN npm install --production
 
 EXPOSE 53
 EXPOSE 8053

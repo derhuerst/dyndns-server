@@ -14,8 +14,6 @@ const getAAAA = () => aaaa
 const setA = (ip) => {a = ip}
 const setAAAA = (ip) => {aaaa = ip}
 
-
-
 const dns = dnsServer(getA, getAAAA)
 dns.listen(dnsPort, '::', (err) => {
 	if (err) return showError(err)

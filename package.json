@@ -1,25 +1,33 @@
 {
-	"name":        "dyndns-server",
+	"private": true,
+	"name": "dyndns-server",
 	"description": "A small dynamic DNS server.",
-	"version":     "0.1.0",
-	"keywords":    ["dns", "dynamic", "dyndns", "nat"],
-	"main":        "index.js",
+	"version": "0.1.0",
+	"keywords": [
+		"dns",
+		"dynamic",
+		"dyndns",
+		"nat"
+	],
+	"main": "index.js",
 	"files": [
 		"index.js",
 		"dns.js",
 		"http.js",
 		"lib"
 	],
-	"author":      "Jannis R <mail@jannisr.de>",
-	"homepage":    "https://github.com/derhuerst/dyndns-server",
-	"repository":  "derhuerst/dyndns-server",
-	"issues":      "https://github.com/derhuerst/dyndns-server/issues",
-	"license":     "ISC",
-	"engines" :    {"node": ">=6"},
+	"author": "Jannis R <mail@jannisr.de>",
+	"homepage": "https://github.com/derhuerst/dyndns-server",
+	"repository": "derhuerst/dyndns-server",
+	"issues": "https://github.com/derhuerst/dyndns-server/issues",
+	"license": "ISC",
+	"engines": {
+		"node": ">=6"
+	},
 	"dependencies": {
-		"basic-auth": "^1.1.0",
+		"basic-auth": "^2.0.1",
 		"dns-socket": "^4.2.0",
-		"ip-regex": "^2.1.0",
+		"ip-regex": "^4.1.0",
 		"pino": "^5.12.2"
 	},
 	"scripts": {
