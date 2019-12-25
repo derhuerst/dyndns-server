@@ -29,12 +29,15 @@ const createServer = (getA, getAAAA) => {
 		}
 
 		for (const q of questions) {
+			const address = resolvers[q.type]()
+			if (address === null) continue
+
 			const record = {
 				type: q.type,
 				class: q.class,
 				name: domain,
 				ttl,
-				data: resolvers[q.type]()
+				data: address
 			}
 			logger.debug({query: query.id, record}, 'Responding.')
 

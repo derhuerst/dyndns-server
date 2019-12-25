@@ -5,8 +5,8 @@ const httpServer = require('./http')
 const {dnsPort, httpPort} = require('./lib/config')
 const logger = require('./lib/logger')
 
-let a = '127.0.0.1'
-let aaaa = '::1'
+let a = null
+let aaaa = null
 
 const getA = () => a
 const getAAAA = () => aaaa
