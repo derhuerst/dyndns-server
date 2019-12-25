@@ -1,7 +1,7 @@
 'use strict'
 
 const dnsSocket = require('dns-socket')
-const {domain, ttl} = require('./lib/config')
+const {domain, ttl, hostname} = require('./lib/config')
 const logger = require('./lib/logger')
 
 const createServer = (getA, getAAAA) => {
@@ -17,10 +17,15 @@ const createServer = (getA, getAAAA) => {
 		.filter(q => q.name === domain)
 
 		const res = {
-			questions,
 			flags: dnsSocket.AUTHORITATIVE_ANSWER,
 			answers: [],
-			authorities: []
+			authorities: [{
+				type: 'NS',
+				class: 'IN',
+				name: domain,
+				ttl,
+				data: hostname
+			}]
 		}
 
 		for (const q of questions) {
@@ -34,7 +39,6 @@ const createServer = (getA, getAAAA) => {
 			logger.debug({query: query.id, record}, 'Responding.')
 
 			res.answers.push(record)
-			res.authorities.push(record)
 		}
 
 		socket.response(query, res, port, host)
