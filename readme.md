@@ -22,7 +22,7 @@ env DOMAIN=awesome.horse KEY=super-secret npm start
 Or using Docker:
 
 ```shell
-docker run -d -p 80:80 derhuerst/dyndns-server
+docker run -d -p 53:53 -p 8053:8053 derhuerst/dyndns-server
 ```
 
 
@@ -31,13 +31,13 @@ docker run -d -p 80:80 derhuerst/dyndns-server
 Set the IP addresses via HTTP (or use [`dyndns-client`](https://www.npmjs.com/package/dyndns-client)):
 
 ```shell
-server='dyndns.example.org'
+hostname='dyndns.example.org'
 secret='super-secret'
 
 ip4=$(curl -s 'https://api.ipify.org')
-curl -X PATCH "http://user:$secret@$server/A" -d $ip4
+curl -X PATCH "http://user:$secret@$hostname:8053/A" -d $ip4
 ip6=$(curl -s 'https://api6.ipify.org')
-curl -X PATCH "http://user:$secret@$server/AAAA" -d $ip6
+curl -X PATCH "http://user:$secret@$hostname:8053/AAAA" -d $ip6
 ```
 
 Verify that the server returns the correct IP addresses:

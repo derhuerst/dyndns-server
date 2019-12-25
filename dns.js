@@ -13,6 +13,8 @@ const createServer = (getA, getAAAA) => {
 	socket.on('query', (query, port, host) => {
 		const questions = query.questions
 		.filter(q => q.class === 'IN')
+		// todo: support NS queries?
+		// todo: support PTR queries?
 		.filter(q => !!resolvers[q.type])
 		.filter(q => q.name === domain)
 
@@ -32,18 +34,16 @@ const createServer = (getA, getAAAA) => {
 			const address = resolvers[q.type]()
 			if (address === null) continue
 
-			const record = {
+			res.answers.push({
 				type: q.type,
 				class: q.class,
 				name: domain,
 				ttl,
 				data: address
-			}
-			logger.debug({query: query.id, record}, 'Responding.')
-
-			res.answers.push(record)
+			})
 		}
 
+		logger.debug({query, response: res}, 'responding')
 		socket.response(query, res, port, host)
 	})
 
