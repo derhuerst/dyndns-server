@@ -29,6 +29,7 @@ const createServer = (getA, getAAAA) => {
 	const resolvers = Object.create(null)
 	resolvers.A = getA
 	resolvers.AAAA = getAAAA
+	resolvers.NS = () => hostname
 
 	const socket = dnsSocket()
 	socket.on('query', (query, port, host) => {
