@@ -1,6 +1,6 @@
 # dyndns-server
 
-**A small dynamic DNS server.**
+**A small dynamic DNS server.** Writes a [hosts file](http://man7.org/linux/man-pages/man5/hosts.5.html) with 1 IPv4 & 1 IPv6 address.
 
 [![npm version](https://img.shields.io/npm/v/dyndns-server.svg)](https://www.npmjs.com/package/dyndns-server)
 [![dependency status](https://img.shields.io/david/derhuerst/dyndns-server.svg)](https://david-dm.org/derhuerst/dyndns-server)
@@ -21,7 +21,7 @@ npm install --production
 Or using Docker:
 
 ```shell
-docker run -d -p 53:53 -p 8053:8053 derhuerst/dyndns-server
+docker run -d -p 3000:3000 derhuerst/dyndns-server
 ```
 
 
@@ -42,18 +42,27 @@ npm start
 Set the IP addresses via HTTP (or use [`dyndns-client`](https://www.npmjs.com/package/dyndns-client)):
 
 ```shell
-ip4=$(curl -s 'https://api.ipify.org')
+# ip4=$(curl -s 'https://api.ipify.org')
+ip4='1.2.3.4'
 curl -X PATCH "http://$HOSTNAME:8053/A" -u "user:$KEY" -d $ip4
 
-ip6=$(curl -s 'https://api6.ipify.org')
+# ip6=$(curl -s 'https://api6.ipify.org')
+ip6='::f0'
 curl -X PATCH "http://$HOSTNAME:8053/AAAA" -u "user:$KEY" -d $ip6
 ```
 
-Verify that the server returns the correct IP addresses:
+Verify that `dyndns-server` has written a correct hosts file using `cat hosts`:
+
+```
+1.2.3.4 awesome.horse
+::f0 awesome.horse
+```
+
+Use a DNS server that picks up the hosts file, e.g. [CoreDNS](https://coredns.io) with the [`hosts` plugin](https://coredns.io/plugins/hosts/). Verify that it returns the correct IP addresses:
 
 ```shell
 dig +short @dyndns.example.org awesome.horse A
-dig +short @dyndns.example.org awesome.horse AAAA
+dig -6 +short @dyndns.example.org awesome.horse AAAA
 ```
 
 Verify that the whole dynamic DNS setup works:

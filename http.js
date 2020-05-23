@@ -50,21 +50,32 @@ const server = (setA, setAAAA) => {
 		req.on('data', (chunk) => ip += chunk.toString())
 		req.on('end', () => {
 
+			let p = Promise.resolve()
 			if (record === 'A') {
 				if (!ipv4.test(ip)) {
 					res.statusCode = 400
 					res.end('Invalid IPv4 address.')
-				} else setA(ip)
-			}
-			if (record === 'AAAA') {
+					return
+				}
+				p = setA(ip)
+			} else if (record === 'AAAA') {
 				if (!ipv6.test(ip)) {
 					res.statusCode = 400
 					res.end('Invalid IPv6 address.')
-				} else setAAAA(ip)
+					return
+				}
+				p = setAAAA(ip)
 			}
 
-			logger.debug({record, ip}, 'Record set.')
-			res.end(ip)
+			p
+			.then(() => {
+				logger.debug({record, ip}, 'Record set.')
+				res.end(ip)
+			})
+			.catch((err) => {
+				res.statusCode = err.statusCode || 500
+				res.end(err ? err.message : ('' + err))
+			})
 		})
 	})
 

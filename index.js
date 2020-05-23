@@ -1,30 +1,49 @@
 'use strict'
 
-const {createSocket: createUdpSocket} = require('dgram')
-const dnsServer = require('./dns')
+const {promisify} = require('util')
+const {writeFile} = require('fs')
 const httpServer = require('./http')
-const {dnsPort, httpPort} = require('./lib/config')
+const {
+	domain,
+	hostsFile,
+	port,
+} = require('./lib/config')
 const logger = require('./lib/logger')
 
 let a = null
 let aaaa = null
 
-const getA = () => a
-const getAAAA = () => aaaa
+const pWriteFile = promisify(writeFile)
+const updateHostsFile = async () => {
+	let body = ''
+	if (a) body += `${a} ${domain}\n`
+	if (aaaa) body += `${aaaa} ${domain}\n`
+	logger.debug('writing hosts file', a, aaaa)
+	await pWriteFile(hostsFile, body)
+	logger.debug('wrote hosts file')
+}
 
-const setA = (ip) => {a = ip}
-const setAAAA = (ip) => {aaaa = ip}
-
-const dns = dnsServer(getA, getAAAA, {
-	socket: createUdpSocket('udp6'),
-})
-dns.listen(dnsPort, (err) => {
-	if (err) return showError(err)
-	logger.info('DNS server listening.')
-})
+const setA = async (ip) => {
+	a = ip
+	await updateHostsFile()
+}
+const setAAAA = async (ip) => {
+	aaaa = ip
+	await updateHostsFile()
+}
 
 const http = httpServer(setA, setAAAA)
-http.listen(httpPort, (err) => {
-	if (err) return showError(err)
-	logger.info('HTTP server listening.')
+
+const showError = (err) => {
+	console.error(err)
+	process.exit(1)
+}
+
+updateHostsFile()
+.then(() => {
+	http.listen(port, (err) => {
+		if (err) return showError(err)
+		logger.info('HTTP server listening.')
+	})
 })
+.catch(showError)

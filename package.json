@@ -12,7 +12,6 @@
 	"main": "index.js",
 	"files": [
 		"index.js",
-		"dns.js",
 		"http.js",
 		"lib"
 	],
@@ -22,11 +21,10 @@
 	"issues": "https://github.com/derhuerst/dyndns-server/issues",
 	"license": "ISC",
 	"engines": {
-		"node": ">=8"
+		"node": ">=10"
 	},
 	"dependencies": {
 		"basic-auth": "^2.0.1",
-		"dns-socket": "^4.2.0",
 		"ip-regex": "^4.1.0",
 		"pino": "^5.12.2"
 	},
