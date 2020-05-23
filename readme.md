@@ -2,12 +2,11 @@
 
 **A small dynamic DNS server.** Writes a [hosts file](http://man7.org/linux/man-pages/man5/hosts.5.html) with 1 IPv4 & 1 IPv6 address.
 
-[![npm version](https://img.shields.io/npm/v/dyndns-server.svg)](https://www.npmjs.com/package/dyndns-server)
 [![dependency status](https://img.shields.io/david/derhuerst/dyndns-server.svg)](https://david-dm.org/derhuerst/dyndns-server)
 [![dev dependency status](https://img.shields.io/david/dev/derhuerst/dyndns-server.svg)](https://david-dm.org/derhuerst/dyndns-server#info=devDependencies)
 ![ISC-licensed](https://img.shields.io/github/license/derhuerst/dyndns-server.svg)
-[![chat on gitter](https://badges.gitter.im/derhuerst.svg)](https://gitter.im/derhuerst)
-[![support me on Patreon](https://img.shields.io/badge/support%20me-on%20patreon-fa7664.svg)](https://patreon.com/derhuerst)
+[![chat with me on Gitter](https://img.shields.io/badge/chat%20with%20me-on%20gitter-512e92.svg)](https://gitter.im/derhuerst)
+[![support me via GitHub Sponsors](https://img.shields.io/badge/support%20me-donate-fa7664.svg)](https://github.com/sponsors/derhuerst)
 
 
 ## Installing
