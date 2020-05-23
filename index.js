@@ -1,5 +1,6 @@
 'use strict'
 
+const {createSocket: createUdpSocket} = require('dgram')
 const dnsServer = require('./dns')
 const httpServer = require('./http')
 const {dnsPort, httpPort} = require('./lib/config')
@@ -14,7 +15,9 @@ const getAAAA = () => aaaa
 const setA = (ip) => {a = ip}
 const setAAAA = (ip) => {aaaa = ip}
 
-const dns = dnsServer(getA, getAAAA)
+const dns = dnsServer(getA, getAAAA, {
+	socket: createUdpSocket('udp6'),
+})
 dns.listen(dnsPort, (err) => {
 	if (err) return showError(err)
 	logger.info('DNS server listening.')

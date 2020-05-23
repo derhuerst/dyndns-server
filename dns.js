@@ -25,13 +25,13 @@ const SOA = {
 	},
 }
 
-const createServer = (getA, getAAAA) => {
+const createServer = (getA, getAAAA, opt = {}) => {
 	const resolvers = Object.create(null)
 	resolvers.A = getA
 	resolvers.AAAA = getAAAA
 	resolvers.NS = () => hostname
 
-	const socket = dnsSocket()
+	const socket = dnsSocket(opt)
 	socket.on('query', (query, port, host) => {
 		const questions = query.questions
 		.filter(q => q.class === 'IN')
